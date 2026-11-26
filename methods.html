@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Behind the scenes – City of Fountains</title>
+<style>
+  :root { --ink: #1f2d36; --muted: #55646e; --line: #d9dee2; --accent: #1f5fa8; --bg: #fbfaf6; --box: #eef3f7; }
+  body { font-family: Georgia, "Times New Roman", serif; max-width: 720px; margin: 0 auto; padding: 32px 16px 64px;
+         color: var(--ink); background: var(--bg); line-height: 1.6; font-size: 17px; }
+  h1, h2, h3 { font-family: system-ui, sans-serif; line-height: 1.25; }
+  h1 { font-size: 30px; margin-bottom: 4px; }
+  h2 { font-size: 21px; margin-top: 40px; border-top: 1px solid var(--line); padding-top: 24px; }
+  .lead { color: var(--muted); font-size: 18px; }
+  .box { background: var(--box); border-left: 4px solid var(--accent); padding: 12px 16px; border-radius: 4px; }
+  a { color: var(--accent); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; font-family: system-ui, sans-serif; }
+  td, th { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  code { font-size: 14px; background: #eceae3; padding: 1px 4px; border-radius: 3px; }
+  img { max-width: 100%; }
+  ol li, ul li { margin: 6px 0; }
+</style>
+</head>
+<body>
+<p><a href="index.html">← Maps</a></p>
+<h1>Behind the scenes</h1>
+<p class="lead">For everyone who wants to know how we made the maps in <i>City of Fountains</i>: data, methods, choices and limits.</p>
+
+<h2>1. How hot does it feel? (PET)</h2>
+<p>Air temperature alone does not tell you how hot a place feels. We use the <b>Physiologically Equivalent Temperature (PET)</b> from the climate model of the Canton of Zurich. PET combines air temperature, sun and heat radiation from surfaces, wind and humidity, and translates them into the air temperature of a standard indoor room that would put the same strain on the body.</p>
+<div class="box">PET is measured in <b>°C</b>. It is <b>not an index from 0 to 1</b>. A PET of 36 °C means: your body feels as stressed as it would in a room at 36 °C.</div>
+<p>The map shows the situation on a hot, sunny summer afternoon (14:00, “status quo” scenario). We use the usual PET heat-stress scale (Matzarakis &amp; Mayer 1996; Höppe 1999):</p>
+<table>
+  <tr><th>PET</th><th>Heat stress</th><th>Our wording</th></tr>
+  <tr><td>below 29 °C</td><td>none to slight</td><td>Pleasant to warm</td></tr>
+  <tr><td>29–35 °C</td><td>moderate</td><td>Hot</td></tr>
+  <tr><td>35–41 °C</td><td>strong</td><td>Very hot</td></tr>
+  <tr><td>41 °C and more</td><td>extreme</td><td>Extremely hot</td></tr>
+</table>
+
+<h2>2. The four kinds of places</h2>
+<p>We combined two simple rules: <b>Is it very hot?</b> (PET 35 °C or more, the start of strong heat stress) and <b>Is the nearest public drinking fountain more than 500 m away?</b> (about a 6-minute walk at 80 m per minute).</p>
+<img src="threshold_groups.png" alt="Two-by-two grid: very hot or cooler, fountain within or beyond 500 m, with the share of residents in each group.">
+
+<h2>3. How we did it</h2>
+<ol>
+  <li><b>Grid.</b> We covered Zurich with a grid of 100 × 100 m squares (lake squares removed).</li>
+  <li><b>Heat.</b> For every square we averaged the PET raster (QGIS <i>Zonal Statistics</i>, mean).</li>
+  <li><b>Fountains.</b> We merged the city’s fountain register with OpenStreetMap drinking-water points and kept the <b>public fountains with drinking water</b> (821 points) for the analysis.</li>
+  <li><b>Footpaths.</b> We downloaded walkable ways from OpenStreetMap with QuickOSM (footways, paths, steps, pedestrian and residential streets etc.; excluding ways tagged <code>foot=no</code>, <code>access=private</code>).</li>
+  <li><b>Walking distance.</b> With the QGIS plugin QNEAT3 we computed the shortest walk along this network from the centre of every square to every public drinking fountain (origin–destination matrix) and kept the shortest one.</li>
+  <li><b>People.</b> We added the number of residents from the city’s hectare-level population statistics (31.12.2025) to each square. Hectares with very few residents have their exact number withheld for privacy; we counted them as 0.</li>
+  <li><b>Interactive maps.</b> The web maps were built in Python with geopandas and folium.</li>
+</ol>
+
+<h2>4. What our maps cannot show</h2>
+<ul>
+  <li><b>Missing fountains.</b> Fountains at SBB train stations and in some private places are not in our data, although many people can use them.</li>
+  <li><b>No route found.</b> For 192 squares (about 7,000 residents, 2%) no walking route could be calculated, e.g. at the Zoo (not publicly accessible) or where the path data has gaps. They are grey on the map and not counted as “far”.</li>
+  <li><b>Where people are during the day.</b> We only know where people live, not where they work, shop or spend a hot afternoon.</li>
+  <li><b>Not every fountain helps everyone.</b> A fountain may be switched off, hard to find, or difficult to use, e.g. with a wheelchair.</li>
+  <li><b>Thresholds are a choice.</b> 35 °C and 500 m are reasonable but not the only possible limits; other values would move some squares into another group.</li>
+</ul>
+
+<h2>5. Data</h2>
+<ul>
+  <li>Fountains: Stadt Zürich, Wasserversorgung – <a href="https://data.stadt-zuerich.ch/dataset/geo_brunnen">Brunnen (Open Data Zürich)</a>; OpenStreetMap drinking-water points</li>
+  <li>Heat: Kanton Zürich, Klimamodell – Wärmebelastung PET Tag, status quo (<a href="https://www.zh.ch/de/umwelt-tiere/klima.html">zh.ch/klima</a>, <a href="https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html">Kanton Zürich Datenkatalog</a>)</li>
+  <li>Residents: Stadt Zürich – Räumliche Bevölkerungsstatistik OGD, hectare grid, 31.12.2025 (<a href="https://data.stadt-zuerich.ch/">Open Data Zürich</a>)</li>
+  <li>Footpaths: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></li>
+  <li>Tools: QGIS with <a href="https://plugins.qgis.org/plugins/QuickOSM/">QuickOSM</a> and <a href="https://github.com/root676/QNEAT3">QNEAT3</a>; Python (geopandas, folium)</li>
+</ul>
+
+<h2>6. Literature</h2>
+<ul>
+  <li>Höppe, P. (1999). The physiological equivalent temperature – a universal index for the biometeorological assessment of the thermal environment. <i>Int J Biometeorol</i> 43, 71–75. <a href="https://doi.org/10.1007/s004840050118">doi:10.1007/s004840050118</a></li>
+  <li>Kaelin, K. (2024). Wärmebelastung im Kanton Zürich. Statistisches Amt des Kantons Zürich.</li>
+  <li>Matzarakis, A. &amp; Mayer, H. (1996). Another kind of environmental stress: thermal stress. <i>WHO Newsletter</i> 18, 7–10.</li>
+  <li>Ragettli, M. S. &amp; Röösli, M. (2021). Hitze-Massnahmen-Toolbox 2021. Swiss TPH, Basel, on behalf of the Federal Office of Public Health.</li>
+  <li>Ragettli, M. S. &amp; Röösli, M. (2021). Hitzebedingte Sterblichkeit im Sommer 2019. <i>Primary and Hospital Care</i>. <a href="https://doi.org/10.4414/phc-d.2021.10296">doi:10.4414/phc-d.2021.10296</a></li>
+</ul>
+<p style="color:var(--muted);font-size:14px;margin-top:40px">Michelle Götz, Raphael Knecht, Janine Roos, Johanna Schweizer – GEO410 Urban Waterscapes, University of Zurich, 2026.</p>
+</body>
+</html>
