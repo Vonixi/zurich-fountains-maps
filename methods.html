@@ -3,57 +3,103 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Behind the scenes – City of Fountains</title>
+<title>For the curious – City of Fountains</title>
 <style>
-  :root { --ink: #1f2d36; --muted: #55646e; --line: #d9dee2; --accent: #1f5fa8; --bg: #fbfaf6; --box: #eef3f7; }
+  :root { --ink: #1f2d36; --muted: #55646e; --line: #d9dee2; --accent: #1f5fa8; --bg: #fbfaf6; --box: #eef3f7; --warm: #fdf0e6; }
+  html { scroll-behavior: smooth; }
   body { font-family: Georgia, "Times New Roman", serif; max-width: 720px; margin: 0 auto; padding: 32px 16px 64px;
          color: var(--ink); background: var(--bg); line-height: 1.6; font-size: 17px; }
-  h1, h2, h3 { font-family: system-ui, sans-serif; line-height: 1.25; }
-  h1 { font-size: 30px; margin-bottom: 4px; }
-  h2 { font-size: 21px; margin-top: 40px; border-top: 1px solid var(--line); padding-top: 24px; }
+  h1, h2, h3, nav, table { font-family: system-ui, sans-serif; }
+  h1 { font-size: 30px; line-height: 1.2; margin-bottom: 4px; }
+  h2 { font-size: 22px; margin-top: 44px; border-top: 1px solid var(--line); padding-top: 24px; scroll-margin-top: 16px; }
   .lead { color: var(--muted); font-size: 18px; }
+  nav { background: var(--box); border-radius: 6px; padding: 12px 16px; font-size: 15px; }
+  nav a { display: inline-block; margin: 3px 12px 3px 0; }
   .box { background: var(--box); border-left: 4px solid var(--accent); padding: 12px 16px; border-radius: 4px; }
+  .warm { background: var(--warm); border-left-color: #e0532b; }
+  .stats { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; font-family: system-ui, sans-serif; }
+  .stat { flex: 1 1 140px; background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; }
+  .stat b { display: block; font-size: 26px; color: var(--accent); }
   a { color: var(--accent); }
-  table { border-collapse: collapse; width: 100%; font-size: 15px; font-family: system-ui, sans-serif; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
   td, th { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  .sw { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
   code { font-size: 14px; background: #eceae3; padding: 1px 4px; border-radius: 3px; }
   img { max-width: 100%; }
-  ol li, ul li { margin: 6px 0; }
+  li { margin: 6px 0; }
+  .back { font-family: system-ui, sans-serif; font-size: 14px; }
 </style>
 </head>
 <body>
-<p><a href="index.html">← Maps</a></p>
-<h1>Behind the scenes</h1>
-<p class="lead">For everyone who wants to know how we made the maps in <i>City of Fountains</i>: data, methods, choices and limits.</p>
+<p class="back"><a href="index.html">← All maps</a></p>
+<h1>For the curious</h1>
+<p class="lead">Background to the story <i>City of Fountains</i>: the science, the numbers, how we made the maps and where their limits are.</p>
+<nav>
+  <a href="#heat">Heat &amp; health</a>
+  <a href="#fountains">Fountains in numbers</a>
+  <a href="#feels-like">What “feels like” means</a>
+  <a href="#groups">The four kinds of places</a>
+  <a href="#how">How we did it</a>
+  <a href="#limits">Limits</a>
+  <a href="#adapt">What cities can do</a>
+  <a href="#data">Data</a>
+  <a href="#literature">Literature</a>
+</nav>
 
-<h2>1. How hot does it feel? (PET)</h2>
-<p>Air temperature alone does not tell you how hot a place feels. We use the <b>Physiologically Equivalent Temperature (PET)</b> from the climate model of the Canton of Zurich. PET combines air temperature, sun and heat radiation from surfaces, wind and humidity, and translates them into the air temperature of a standard indoor room that would put the same strain on the body.</p>
-<div class="box">PET is measured in <b>°C</b>. It is <b>not an index from 0 to 1</b>. A PET of 36 °C means: your body feels as stressed as it would in a room at 36 °C.</div>
-<p>The map shows the situation on a hot, sunny summer afternoon (14:00, “status quo” scenario). We use the usual PET heat-stress scale (Matzarakis &amp; Mayer 1996; Höppe 1999):</p>
+<h2 id="heat">1. Heat and health</h2>
+<p>From about 30 °C, the body has to work hard to keep its core temperature stable: it sweats more and pumps more blood to the skin. That costs water and strains the heart and circulation. The result can be dehydration, circulation problems and exhaustion (Ragettli &amp; Röösli 2021).</p>
+<ul>
+  <li><b>Heat costs lives.</b> The hot summers of 2003, 2015, 2018 and 2019 led to clearly more deaths and emergency hospital visits in Switzerland than usual, above all among older people (Ragettli &amp; Röösli 2021).</li>
+  <li><b>Not only heatwaves count.</b> The many moderately hot days over a whole summer add up to a large part of the heat-related health burden (Ragettli &amp; Röösli 2021, Toolbox).</li>
+  <li><b>Who is most at risk?</b> Older people, small children, people with chronic illnesses, people who work or exercise outdoors, and people without a cool place to stay.</li>
+</ul>
+<div class="box warm"><b>The urban heat island.</b> Cities are warmer than the countryside around them: asphalt, stone and buildings store the sun’s heat and release it slowly, while there is less shade and greenery. In the city of Zurich, the annual mean temperature is 1–3 °C higher than in the surroundings, and on clear, calm summer days differences can reach up to 7 °C. During a heatwave day, almost everyone in Zurich experiences increased heat stress, and about 70% experience strong or very strong heat stress (Kaelin 2024).</div>
+
+<h2 id="fountains">2. Zurich’s fountains in numbers</h2>
+<div class="stats">
+  <div class="stat"><b>≈ 1,200</b>fountains run by the city’s water utility</div>
+  <div class="stat"><b>≈ 800</b>drinking fountains on the normal drinking-water network</div>
+  <div class="stat"><b>≈ 320</b>mostly historic fountains fed by a separate spring-water network of about 150 km</div>
+  <div class="stat"><b>≈ 80–90</b>emergency fountains</div>
+</div>
+<p>Source: Stadt Zürich, Wasserversorgung – <a href="https://www.stadt-zuerich.ch/de/umwelt-und-energie/wasser/trinkwasser/brunnen.html">Brunnen</a>. Our map combines the city’s register with OpenStreetMap, which is why it shows 1,384 fountains in total (including private ones and fountains without confirmed drinking water).</p>
+<p><b>The spring-water network</b> is independent of the normal supply. That is why the bronze emergency fountains, designed in the 1990s by Alf Aebersold, keep running even when the power fails.</p>
+<p><b>Fountains for dogs.</b> Look closely at the foot of some fountains and you will find a small, low basin: a <i>Hundetrog</i>, a drinking trough for dogs. Several historic fountains have had one for more than a hundred years, for example the obelisk fountain on Kilchbergstrasse from 1904 with a dog trough made of St-Triphon marble (Stadt Zürich, Wasserversorgung, <a href="https://www.stadt-zuerich.ch/de/umwelt-und-energie/wasser/trinkwasser/brunnen.html">Brunnenguides</a>). In OpenStreetMap, about 170 fountains in our data are marked as suitable for dogs. On our fountain map, their pop-ups say “Dogs can drink here”.</p>
+
+<h2 id="feels-like">3. What “feels like” means (PET)</h2>
+<p>Air temperature alone does not tell you how hot a place feels. Our heat map uses the <b>Physiologically Equivalent Temperature (PET)</b> from the climate model of the Canton of Zurich. PET combines air temperature, sun and heat radiation from surfaces, wind and humidity. It translates them into the air temperature of a standard indoor room that would put the same strain on your body.</p>
+<div class="box">PET is measured in <b>°C</b>. It is <b>not an index from 0 to 1</b>. “Feels like 36 °C” means: your body is as stressed as it would be in a room at 36 °C.</div>
+<p>The map shows a hot, sunny summer afternoon (14:00, “status quo” scenario). We use the usual PET heat-stress scale (Matzarakis &amp; Mayer 1996; Höppe 1999):</p>
 <table>
-  <tr><th>PET</th><th>Heat stress</th><th>Our wording</th></tr>
+  <tr><th>Feels like (PET)</th><th>Heat stress</th><th>Our wording</th></tr>
   <tr><td>below 29 °C</td><td>none to slight</td><td>Pleasant to warm</td></tr>
   <tr><td>29–35 °C</td><td>moderate</td><td>Hot</td></tr>
   <tr><td>35–41 °C</td><td>strong</td><td>Very hot</td></tr>
   <tr><td>41 °C and more</td><td>extreme</td><td>Extremely hot</td></tr>
 </table>
 
-<h2>2. The four kinds of places</h2>
-<p>We combined two simple rules: <b>Is it very hot?</b> (PET 35 °C or more, the start of strong heat stress) and <b>Is the nearest public drinking fountain more than 500 m away?</b> (about a 6-minute walk at 80 m per minute).</p>
+<h2 id="groups">4. The four kinds of places</h2>
+<p>We combined two simple questions: <b>Does it feel like 35 °C or more?</b> (the start of strong heat stress) and <b>Is the nearest public drinking fountain more than 500 m away?</b> (about a 6-minute walk at 80 m per minute).</p>
 <img src="threshold_groups.png" alt="Two-by-two grid: very hot or cooler, fountain within or beyond 500 m, with the share of residents in each group.">
+<table>
+  <tr><td><span class="sw" style="background:#f4a259"></span><b>Very hot, but a fountain is close</b></td><td>Most of the dense city. It gets very hot, but the fountain network is dense enough that the next public drinking fountain is within a short walk. 72% of residents live here.</td></tr>
+  <tr><td><span class="sw" style="background:#9ccf6e"></span><b>Cooler &amp; a fountain is close</b></td><td>The cool spots: forests and hills around the city, but also places inside it. The Limmat, the lake, parks and cemeteries cool their surroundings – the Sihlfeld cemetery is clearly cooler than the dense neighbourhoods around it.</td></tr>
+  <tr><td><span class="sw" style="background:#f1d65c"></span><b>Cooler, but far from water</b></td><td>Mostly forests and hills at the edge of the city, where few people live and few fountains stand. Less of a problem on a hot day.</td></tr>
+  <tr><td><span class="sw" style="background:#b2182b"></span><b>Very hot &amp; far from water</b></td><td>The real gaps. They lie mostly at the edge of the city (Höngg, Affoltern, Seebach) and along railway tracks, where few crossings make the walk longer. About 8,500 people (2%) live here.</td></tr>
+</table>
 
-<h2>3. How we did it</h2>
+<h2 id="how">5. How we did it</h2>
 <ol>
-  <li><b>Grid.</b> We covered Zurich with a grid of 100 × 100 m squares (lake squares removed).</li>
+  <li><b>Grid.</b> We covered Zurich with 100 × 100 m squares (lake squares removed).</li>
   <li><b>Heat.</b> For every square we averaged the PET raster (QGIS <i>Zonal Statistics</i>, mean).</li>
   <li><b>Fountains.</b> We merged the city’s fountain register with OpenStreetMap drinking-water points and kept the <b>public fountains with drinking water</b> (821 points) for the analysis.</li>
-  <li><b>Footpaths.</b> We downloaded walkable ways from OpenStreetMap with QuickOSM (footways, paths, steps, pedestrian and residential streets etc.; excluding ways tagged <code>foot=no</code>, <code>access=private</code>).</li>
+  <li><b>Footpaths.</b> We downloaded walkable ways from OpenStreetMap with QuickOSM (footways, paths, steps, pedestrian and residential streets etc.), excluding ways tagged <code>foot=no</code> or <code>access=private</code>.</li>
   <li><b>Walking distance.</b> With the QGIS plugin QNEAT3 we computed the shortest walk along this network from the centre of every square to every public drinking fountain (origin–destination matrix) and kept the shortest one.</li>
   <li><b>People.</b> We added the number of residents from the city’s hectare-level population statistics (31.12.2025) to each square. Hectares with very few residents have their exact number withheld for privacy; we counted them as 0.</li>
   <li><b>Interactive maps.</b> The web maps were built in Python with geopandas and folium.</li>
 </ol>
 
-<h2>4. What our maps cannot show</h2>
+<h2 id="limits">6. What our maps cannot show</h2>
 <ul>
   <li><b>Missing fountains.</b> Fountains at SBB train stations and in some private places are not in our data, although many people can use them.</li>
   <li><b>No route found.</b> For 192 squares (about 7,000 residents, 2%) no walking route could be calculated, e.g. at the Zoo (not publicly accessible) or where the path data has gaps. They are grey on the map and not counted as “far”.</li>
@@ -62,7 +108,17 @@
   <li><b>Thresholds are a choice.</b> 35 °C and 500 m are reasonable but not the only possible limits; other values would move some squares into another group.</li>
 </ul>
 
-<h2>5. Data</h2>
+<h2 id="adapt">7. What cities can do</h2>
+<p>Switzerland’s heat-action toolbox for cantons and cities lists long-term measures to protect people from heat (Ragettli &amp; Röösli 2021). Many of them are about water and shade:</p>
+<ul>
+  <li><b>Sponge city (Schwammstadt).</b> Instead of draining rainwater away, streets and squares store it in soil and plants. On hot days it evaporates and cools the air.</li>
+  <li><b>Unpaving and shading.</b> Less asphalt, more trees along streets, green roofs and facades stop heat from building up in the city.</li>
+  <li><b>Free drinking water where it is needed.</b> Permanent drinking fountains in places that are hot, busy and far from the next fountain – our “very hot &amp; far” squares show where to start.</li>
+  <li><b>Cool places and care.</b> Shaded, open places to rest, heat warnings and checking in on older people living alone.</li>
+</ul>
+<p>The city of Zurich already plans to reduce heat in a targeted way (Fachplanung Hitzeminderung) and promotes the sponge-city principle in new building projects.</p>
+
+<h2 id="data">8. Data</h2>
 <ul>
   <li>Fountains: Stadt Zürich, Wasserversorgung – <a href="https://data.stadt-zuerich.ch/dataset/geo_brunnen">Brunnen (Open Data Zürich)</a>; OpenStreetMap drinking-water points</li>
   <li>Heat: Kanton Zürich, Klimamodell – Wärmebelastung PET Tag, status quo (<a href="https://www.zh.ch/de/umwelt-tiere/klima.html">zh.ch/klima</a>, <a href="https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html">Kanton Zürich Datenkatalog</a>)</li>
@@ -71,13 +127,14 @@
   <li>Tools: QGIS with <a href="https://plugins.qgis.org/plugins/QuickOSM/">QuickOSM</a> and <a href="https://github.com/root676/QNEAT3">QNEAT3</a>; Python (geopandas, folium)</li>
 </ul>
 
-<h2>6. Literature</h2>
+<h2 id="literature">9. Literature</h2>
 <ul>
   <li>Höppe, P. (1999). The physiological equivalent temperature – a universal index for the biometeorological assessment of the thermal environment. <i>Int J Biometeorol</i> 43, 71–75. <a href="https://doi.org/10.1007/s004840050118">doi:10.1007/s004840050118</a></li>
   <li>Kaelin, K. (2024). Wärmebelastung im Kanton Zürich. Statistisches Amt des Kantons Zürich.</li>
   <li>Matzarakis, A. &amp; Mayer, H. (1996). Another kind of environmental stress: thermal stress. <i>WHO Newsletter</i> 18, 7–10.</li>
   <li>Ragettli, M. S. &amp; Röösli, M. (2021). Hitze-Massnahmen-Toolbox 2021. Swiss TPH, Basel, on behalf of the Federal Office of Public Health.</li>
   <li>Ragettli, M. S. &amp; Röösli, M. (2021). Hitzebedingte Sterblichkeit im Sommer 2019. <i>Primary and Hospital Care</i>. <a href="https://doi.org/10.4414/phc-d.2021.10296">doi:10.4414/phc-d.2021.10296</a></li>
+  <li>Stadt Zürich, Wasserversorgung. Brunnen in Zürich and Brunnenguides. <a href="https://www.stadt-zuerich.ch/de/umwelt-und-energie/wasser/trinkwasser/brunnen.html">stadt-zuerich.ch</a></li>
 </ul>
 <p style="color:var(--muted);font-size:14px;margin-top:40px">Michelle Götz, Raphael Knecht, Janine Roos, Johanna Schweizer – GEO410 Urban Waterscapes, University of Zurich, 2026.</p>
 </body>
